@@ -7,7 +7,7 @@
  * @method updateData() update a database record
  * @method deleteData() delete a database record
 */
-class DataHandler{
+class DataHandler {
     public $pdo;
 
     /**
@@ -28,29 +28,25 @@ class DataHandler{
     }
 
     /**
-     * used to insert data in the database
+     * insert data in the database
      *
      * @param string    $sql the sql query
-     * @param array     $bindings (optional) the bindings used in the query
-     * @return int      last insert id
+     * @return array    boolean
      */
-    public function createData(string $sql, array $bindings = []) {
-        $sth = $this->pdo->prepare($sql);
-        $sth->execute($bindings);
-        return $this->pdo->lastInsertId();
-    }
+    public function createData(string $sql) {
+		return $this->conn->query($sql);
+	}
 
     /**
      * reads data from a database
      *
      * @param string    $sql the sql query
-     * @param array     $bindings (optional) the bindings for the query
      * @param boolean   $multiple (optional) if you want multiple rows or not
      * @return array    the data from the database
      */
-    public function readData(string $sql, array $bindings = [], bool $multiple = true) {
+    public function readData(string $sql, bool $multiple = true) {
         $sth = $this->pdo->prepare($sql);
-        $sth->execute($bindings);
+        $sth->execute();
 
         if($multiple) {
             return $sth->fetchAll();
@@ -61,28 +57,23 @@ class DataHandler{
     }
 
     /**
-     * updates data in the database
+     * update data in the database
      *
      * @param string    $sql the sql query
-     * @param array     $bindings (optional) the bindings for the query
-     * @return int      last insert id
+     * @return array    boolean
      */
-    public function updateData(string $sql, array $bindings = []) {
-        $sth = $this->pdo->prepare($sql);
-        $sth->execute($bindings);
-        return $this->pdo->lastInsertId();
-    }
+	public function updateData(string $sql) {
+		return createData($sql);
+	}
 
     /**
-     * deletes data in the database
+     * delete data in the database
      *
      * @param string    $sql the sql query
-     * @param array     $bindings (optional) the bindings for the query
-     * @return bool     if the query completed or not
+     * @return array    boolean
      */
-    public function deleteData(string $sql, array $bindings = []) {
-        $sth = $this->pdo->prepare($sql);
-        return $sth->execute($bindings);
-    }
+	public function deleteData(string $sql) {
+		return createData($sql);
+	}
 }
 ?>
