@@ -53,9 +53,11 @@ class Router {
 
         // checks if params are defined and choose run mode based on that
         if (isset($ctrlName)) {
+
             if (file_exists ($ctrlPath) ) {
                 require_once "$ctrlPath";
                 $controller = new $ctrlName();
+
                 if (isset($params[0])) {
                     if ($params[0]) {
                         return $controller->$method($params);
@@ -67,7 +69,9 @@ class Router {
                         return $controller->$method();
                     }
                 }
+
             }
+
         } else {
             return false;
         }
