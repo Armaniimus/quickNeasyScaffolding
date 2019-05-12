@@ -3,15 +3,27 @@
  *
  */
 class Router {
-    function __construct ($rootUrl = "/") {
+    private $packets;
+    private $filteredPackets;
+
+    public function __construct ($rootUrl = "/") {
         // set urlOffset
-        $rootUrl = count(explode("/", $rootUrl));
-        $this->rootUrl = $rootUrl;
+        $this->rootUrl = count(explode("/", $rootUrl));
 
         // getPayload
         $url = $_SERVER['REQUEST_URI'];
         $this->packets = explode("/", $url);
         $this->filteredPackets = array_slice($this->packets, $this->rootUrl);
+
+        echo '<br>';
+        echo $this->rootUrl;
+        echo '<br>';
+
+        var_dump($this->packets);
+        echo '<br>';
+
+        var_dump($this->filteredPackets);
+        echo '<br>';
     }
 
     /**
@@ -32,10 +44,10 @@ class Router {
      * @return string/bool if there was no error return the content from the controller
      */
     private function determineDestination() {
-        $filteredPackets = $this->filteredPackets;
-        $this->controller  = array_shift($filteredPackets);
-        $this->method    = array_shift($filteredPackets);
-        $this->params    = $filteredPackets;
+        $filteredPackets  = $this->filteredPackets;
+        $this->controller = array_shift($filteredPackets);
+        $this->method     = array_shift($filteredPackets);
+        $this->params     = $filteredPackets;
 
         return $this->sendToDestination();
     }
@@ -69,7 +81,6 @@ class Router {
                         return $controller->$method();
                     }
                 }
-
             }
 
         } else {

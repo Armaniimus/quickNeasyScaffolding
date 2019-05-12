@@ -1,0 +1,13 @@
+<?php
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+#if the file doesn't exist
+RewriteCond %{REQUEST_FILENAME} !-f
+
+#if the directory doesn't exist
+RewriteCond %{REQUEST_FILENAME} !-d
+
+#send to the index.php
+RewriteRule . index.php [L]
+</IfModule>
